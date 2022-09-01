@@ -12,3 +12,12 @@ export const userRegister = async (req: Request, res: Response) => {
  }
 };
 
+export const userLogin = async (req: Request, res: Response) => {
+    try {
+      const foundUser = await userServices.login(req.body);
+      res.status(200).send(foundUser);
+    } catch (error) {
+      return res.status(500).send(getErrorMessage(error));
+    }
+   };
+   

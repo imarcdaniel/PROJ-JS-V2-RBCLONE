@@ -6,6 +6,9 @@ const router = express.Router();
 
 // POST /api/users/signup
 router.post('/signup', userController.userRegister);
+// POST /api/users/login
+router.post('/login', userController.userLogin);
+
 
 
 export default function initRouter(app: express.Application) {

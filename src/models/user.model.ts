@@ -1,4 +1,8 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+
+
+const SALT_ROUNDS = 8 // minimum number of rounds to use when hashing passwords
 
 export interface I_UserDocument extends mongoose.Document {
  name: string;
@@ -29,8 +33,18 @@ const UserSchema: mongoose.Schema<I_UserDocument> = new mongoose.Schema({
       return ret;
     }
   }
+  
 
 });
 
+UserSchema.pre('save', async function (next) {
+  const user = this;
+  if (user.isModified('password')) {
+    user.password = await bcrypt.hash(user.password, SALT_ROUNDS);
+  }
+  next();
+ });
+
 const UserModel = mongoose.model<I_UserDocument>('User', UserSchema);
 export default UserModel; 
+
